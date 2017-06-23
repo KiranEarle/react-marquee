@@ -122,7 +122,7 @@ const Marquee = React.createClass({
 
       if (isRoundOver) {
         if (this.props.loop) {
-          animatedWidth = 0;
+          animatedWidth = 0
         }
         else {
           return;
