@@ -7,7 +7,7 @@ const TIMEOUT = 1 / FPS * 1000;
 
 const Marquee = React.createClass({
   propTypes: {
-    text: PropTypes.string,
+    content: PropTypes.func,
     hoverToStop: PropTypes.bool,
     loop: PropTypes.bool,
     leading: PropTypes.number,
@@ -17,7 +17,9 @@ const Marquee = React.createClass({
 
   getDefaultProps() {
     return {
-      text: '',
+      content: () => {
+        return null
+      },
       hoverToStop: false,
       loop: false,
       leading: 0,
@@ -53,7 +55,7 @@ const Marquee = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-          if(this.props.text.length != nextProps.text.length)
+          if(this.props.content.length != nextProps.content.length)
           {
               clearTimeout(this._marqueeTimer);
               this.setState({
@@ -93,7 +95,7 @@ const Marquee = React.createClass({
     if (this.state.overflowWidth < 0) {
       return (
         <div className={`ui-marquee ${this.props.className}`} style={{overflow: 'hidden'}}>
-          <span ref="text" style={style} title={this.props.text}>{this.props.text}</span>
+          <span ref="content" style={style} >{this.props.content()}</span>
         </div>
       );
     }
@@ -102,7 +104,7 @@ const Marquee = React.createClass({
         <div className={`ui-marquee ${this.props.className}`} style={{overflow: 'hidden'}}
              onMouseEnter={this.handleMouseEnter}
              onMouseLeave={this.handleMouseLeave}>
-          <span ref="text" style={style} title={this.props.text}>{this.props.text}</span>
+          <span ref="content" style={style} >{this.props.content()}</span>
         </div>
       );
     }
@@ -150,7 +152,7 @@ const Marquee = React.createClass({
 
   _measureText() {
     const container = ReactDOM.findDOMNode(this);
-    const node = ReactDOM.findDOMNode(this.refs.text);
+    const node = ReactDOM.findDOMNode(this.refs.content);
 
     if (container && node) {
       const containerWidth = container.offsetWidth;
